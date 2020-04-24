@@ -3,7 +3,7 @@ from _thread import *
 import sys
 
 
-server = ""
+server = "192.168.254.11"
 port = 5555
 players = 2
 package_size = 2048
@@ -22,6 +22,7 @@ print("Waiting for a connection, Server Started")
 
 def threaded_client(conn):
 
+    conn.send(str.encode("Connected"))
     reply = ""
     while True:
         try:
@@ -39,6 +40,8 @@ def threaded_client(conn):
         #Find out which error might occur and how to handle it
         except:
             break
+    print("Lost connection")
+    conn.close()
 
 
 
