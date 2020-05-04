@@ -1,7 +1,9 @@
 import socket
+import pickle
 
 
 package_size = 2048
+
 
 class Network:
     def __init__(self):
@@ -9,21 +11,21 @@ class Network:
         self.server = "192.168.254.11"
         self.port = 5555
         self.addr = (self.server, self.port)
-        self.pos = self.connect()
+        self.p = self.connect()
 
-    def getPos(self):
-        return self.pos
+    def getP(self):
+        return self.p
 
     def connect(self):
         try:
             self.client.connect(self.addr)
-            return self.client.recv(package_size).decode()
+            return pickle.loads(self.client.recv(package_size))
         except:
             pass
 
     def send(self, data):
         try:
-            self.client.send(str.encode(data))
-            return self.client.recv(package_size).decode()
+            self.client.send(pickle.dumps(data))
+            return pickle.loads(self.client.recv(package_size))
         except socket.error as e:
             print(e)
